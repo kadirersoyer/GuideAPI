@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GuideAPI.Context\GuideAPI.Context.csproj" />
+    <ProjectReference Include="..\GuideAPI.Entities\GuideAPI.Entities.csproj" />
+  </ItemGroup>
+
+</Project>

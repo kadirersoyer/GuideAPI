@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GuideAPI.Entities\GuideAPI.Entities.csproj" />
+    <ProjectReference Include="..\GuideAPI.Models\GuideAPI.Models.csproj" />
+  </ItemGroup>
+
+</Project>
