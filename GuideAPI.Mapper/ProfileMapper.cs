@@ -17,6 +17,9 @@ namespace GuideAPI.Mapper
             CreateMap<Person, PersonDto>().ReverseMap().MaxDepth(5);
             CreateMap<PersonInformation, PersonInformationDto>().ReverseMap().MaxDepth(5);
             CreateMap<Report, ReportDto>().ReverseMap().MaxDepth(5);
+
+            //CreateMap<Report, ReportDto>().ForMember(m => m.ReportStatus, opt => opt.MapFrom(c => c.ReportStatus)).ReverseMap();
+
         }
     }
 }
