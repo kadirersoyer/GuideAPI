@@ -1,7 +1,13 @@
+using GuideAPI.Context;
+using GuideAPI.Mapper;
+using GuideAPI.Repositories;
+using GuideAPI.Repositories.UnitOfWork;
+using GuideAPI.Services.PersonServices;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -12,7 +18,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ReportAPI
+namespace PersonWebAPI
 {
     public class Startup
     {
@@ -30,8 +36,15 @@ namespace ReportAPI
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ReportAPI", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "PersonWebAPI", Version = "v1" });
             });
+
+            services.AddTransient<IAutoMapper, GuideAPI.Mapper.AutoMapper>();
+            services.AddTransient<IPersonService, PersonService>();
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+            services.AddScoped<IUnitofWork, UnitofWork>();
+            // Configure Db COntext Options
+            services.AddDbContext<GuideAPIContext>(options => options.UseSqlServer(Configuration.GetConnectionString("GuideAPIConnectionString")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -41,7 +54,7 @@ namespace ReportAPI
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ReportAPI v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "PersonWebAPI v1"));
             }
 
             app.UseHttpsRedirection();

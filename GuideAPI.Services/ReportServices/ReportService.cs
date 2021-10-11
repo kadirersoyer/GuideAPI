@@ -38,7 +38,7 @@ namespace GuideAPI.Services.ReportServices
             var reports = reportRepository.GetList();
             var entities = autoMapper.MapCollection<Report, ReportDto>(reports);
 
-            return entities;
+            return new List<ReportResponseDto>();
         }
     }
 }
