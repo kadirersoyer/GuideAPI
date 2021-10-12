@@ -2,21 +2,15 @@ using GuideAPI.Context;
 using GuideAPI.Mapper;
 using GuideAPI.Repositories;
 using GuideAPI.Repositories.UnitOfWork;
+using GuideAPI.Services.AsynDataServices;
 using GuideAPI.Services.PersonServices;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace PersonWebAPI
 {
@@ -43,6 +37,8 @@ namespace PersonWebAPI
             services.AddTransient<IPersonService, PersonService>();
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped<IUnitofWork, UnitofWork>();
+            services.AddScoped<IRabbitmqService, RabbitmqService>();
+
             // Configure Db COntext Options
             services.AddDbContext<GuideAPIContext>(options => options.UseSqlServer(Configuration.GetConnectionString("GuideAPIConnectionString")));
         }

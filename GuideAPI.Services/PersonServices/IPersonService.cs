@@ -34,5 +34,10 @@ namespace GuideAPI.Services.PersonServices
         /// </summary>
         /// <returns></returns>
         List<PersonDto> GetPersonList();
+
+        /// <summary>
+        ///  Make Location Request
+        /// </summary>
+        void MakeReportLocationRequest();
     }
 }

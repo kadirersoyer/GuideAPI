@@ -4,6 +4,7 @@ using GuideAPI.Models.Report;
 using GuideAPI.Repositories;
 using GuideAPI.Repositories.UnitOfWork;
 using GuideAPI.Services.PersonServices;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,31 +15,39 @@ namespace GuideAPI.Services.ReportServices
 {
     public class ReportService : IReportService
     {
-        private readonly IAutoMapper autoMapper;
-        private readonly IUnitofWork unitofWork;
-        private readonly IPersonService personService;
-        private readonly IRepository<Report> reportRepository;
+        private readonly IServiceScopeFactory serviceScopeFactory;
 
-        public ReportService(IUnitofWork unitofWork, IAutoMapper autoMapper)
+        public ReportService(IServiceScopeFactory serviceScopeFactory)
         {
-            this.autoMapper = autoMapper;
-            this.unitofWork = unitofWork;
-            this.reportRepository = this.unitofWork.GetRepository<Report>();
-
+            this.serviceScopeFactory = serviceScopeFactory;
         }
         public void AddReportRequest(ReportDto reportDto)
         {
-            var entity = autoMapper.Map<ReportDto, Report>(reportDto);
-            reportRepository.Add(entity);
-            unitofWork.Save();
+            using (var scope = serviceScopeFactory.CreateScope())
+            {
+                var unitOfWorkService = scope.ServiceProvider.GetRequiredService<IUnitofWork>();
+                var autoMapperService = scope.ServiceProvider.GetRequiredService<IAutoMapper>();
+                var reportRepository = unitOfWorkService.GetRepository<Report>();
+
+                var entity = autoMapperService.Map<ReportDto, Report>(reportDto);
+                reportRepository.Add(entity);
+                unitOfWorkService.Save();
+            }
         }
 
         public List<ReportResponseDto> GetReportResponses()
         {
-            var reports = reportRepository.GetList();
-            var entities = autoMapper.MapCollection<Report, ReportDto>(reports);
+            using (var scope = serviceScopeFactory.CreateScope())
+            {
+                var unitOfWorkService = scope.ServiceProvider.GetRequiredService<IUnitofWork>();
+                var autoMapperService = scope.ServiceProvider.GetRequiredService<IAutoMapper>();
+                var reportRepository = unitOfWorkService.GetRepository<Report>();
 
-            return new List<ReportResponseDto>();
+                var reports = reportRepository.GetList();
+                var entities = autoMapperService.MapCollection<Report, ReportDto>(reports);
+
+                return new List<ReportResponseDto>(); 
+            }
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using GuideAPI.Models.Person;
 using GuideAPI.Services.PersonServices;
 using Microsoft.AspNetCore.Mvc;
+using RabbitMQ.Client;
 using System;
 
 namespace PersonWebAPI.Controllers
@@ -71,6 +72,25 @@ namespace PersonWebAPI.Controllers
             }
             catch (Exception ex)
             {
+                return BadRequest(new { message = ex.Message, status = false });
+            }
+        }
+
+        /// <summary>
+        ///  Make Report Request
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("make-report-request")]
+        public IActionResult MakeReportRequest()
+        {
+            try
+            {
+                _personService.MakeReportLocationRequest();
+                return Ok(new { message = "Report Request Created", status = true });
+            }
+            catch (Exception ex)
+            {
+
                 return BadRequest(new { message = ex.Message, status = false });
             }
         }
