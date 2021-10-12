@@ -2,7 +2,7 @@ using GuideAPI.Context;
 using GuideAPI.Mapper;
 using GuideAPI.Repositories;
 using GuideAPI.Repositories.UnitOfWork;
-using GuideAPI.Services.AsynDataServices;
+using GuideAPI.Services.AsyncDataServices;
 using GuideAPI.Services.PersonServices;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
